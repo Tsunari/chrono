@@ -70,3 +70,42 @@ void updateDigitalClockWidget() {
     qualifiedAndroidName: 'com.vicolo.chrono.DigitalClockWidgetProvider',
   );
 }
+
+void setTimerWidgetData({
+  required String label,
+  required String time,
+  required String state,
+  String? timerColor,
+  String? labelColor,
+  bool? showLabel,
+  bool? showState,
+}) async {
+  try {
+    await HomeWidget.saveWidgetData<String>('timerLabel', label);
+    await HomeWidget.saveWidgetData<String>('timerTime', time);
+    await HomeWidget.saveWidgetData<String>('timerState', state);
+    if (timerColor != null) {
+      await HomeWidget.saveWidgetData<String>('timerColor', timerColor);
+    }
+    if (labelColor != null) {
+      await HomeWidget.saveWidgetData<String>('labelColor', labelColor);
+    }
+    if (showLabel != null) {
+      await HomeWidget.saveWidgetData<bool>('showLabel', showLabel);
+    }
+    if (showState != null) {
+      await HomeWidget.saveWidgetData<bool>('showState', showState);
+    }
+    updateTimerWidget();
+  } catch (e) {
+    logger.e("Couldn't update Timer Widget: $e");
+  }
+}
+
+void updateTimerWidget() {
+  HomeWidget.updateWidget(
+    androidName: 'TimerWidgetProvider',
+    name: 'TimerWidgetProvider',
+    qualifiedAndroidName: 'com.vicolo.chrono.TimerWidgetProvider',
+  );
+}

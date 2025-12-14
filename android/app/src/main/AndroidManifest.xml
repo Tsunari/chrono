@@ -154,5 +154,12 @@
       <meta-data android:name="android.appwidget.provider"
         android:resource="@xml/digital_clock_widget" />
       </receiver>
+    <receiver android:name="TimerWidgetProvider" android:exported="true" android:label="Timer">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+        android:resource="@xml/timer_widget" />
+    </receiver>
   </application>
 </manifest>
