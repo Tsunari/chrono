@@ -268,7 +268,7 @@ SettingGroup widgetSettingSchema = SettingGroup(
             ),
             ColorSetting(
               "Timer Color",
-              (context) => AppLocalizations.of(context)!.colorSetting,
+              (context) => AppLocalizations.of(context)!.timerColorSetting,
               Colors.white,
               onChange: (context, value) async {
                 await HomeWidget.saveWidgetData<String>(
@@ -278,7 +278,7 @@ SettingGroup widgetSettingSchema = SettingGroup(
             ),
             ColorSetting(
               "Label Color",
-              (context) => AppLocalizations.of(context)!.colorSetting,
+              (context) => AppLocalizations.of(context)!.labelColorSetting,
               Colors.white,
               onChange: (context, value) async {
                 await HomeWidget.saveWidgetData<String>(
