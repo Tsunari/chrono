@@ -43,7 +43,6 @@ class _TagsScreenState extends State<TagsScreen> {
     newTag.name = tagName ?? newTag.name;
     return newTag;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,4 +87,29 @@ class _TagsScreenState extends State<TagsScreen> {
       ),
     );
   }
+}
+
+Future<Tag?> showTagEditor(BuildContext context, [Tag? initialTag]) async {
+  Tag newTag = Tag.from(initialTag ?? Tag("New Preset"));
+
+  String? tagName = await showModalBottomSheet<String>(
+    context: context,
+    isScrollControlled: true,
+    enableDrag: true,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return InputBottomSheet(
+            title: AppLocalizations.of(context)!.editTagLabel,
+            description: "",
+            initialValue: newTag.name,
+            hintText: AppLocalizations.of(context)!.tagNamePlaceholder,
+            onChange: (value) {},
+          );
+        },
+      );
+    },
+  );
+  newTag.name = tagName ?? newTag.name;
+  return newTag;
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 const defaultElevation = 1.0;
 
-const cardTheme = CardTheme(
+const cardThemeData = CardThemeData(
   shape: defaultShape,
   clipBehavior: Clip.hardEdge,
   elevation: defaultElevation,

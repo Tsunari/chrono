@@ -5,6 +5,7 @@ import 'package:clock_app/system/data/device_info.dart';
 import 'package:clock_app/widgets/logic/update_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:home_widget/home_widget.dart';
 
 SettingGroup widgetSettingSchema = SettingGroup(
   "Widgets",

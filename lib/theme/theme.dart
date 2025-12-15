@@ -27,7 +27,7 @@ ThemeData defaultTheme = ThemeData(
     bodyColor: defaultColorScheme.onBackground,
     displayColor: defaultColorScheme.onBackground,
   ),
-  cardTheme: cardTheme,
+  cardTheme: cardThemeData,
   colorScheme: getColorScheme(defaultColorScheme),
   timePickerTheme: timePickerTheme,
   dialogTheme: dialogTheme,
