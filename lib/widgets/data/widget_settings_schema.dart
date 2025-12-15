@@ -5,6 +5,7 @@ import 'package:clock_app/system/data/device_info.dart';
 import 'package:clock_app/widgets/logic/update_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:home_widget/home_widget.dart';
 
 SettingGroup widgetSettingSchema = SettingGroup(
   "Widgets",
@@ -238,6 +239,56 @@ SettingGroup widgetSettingSchema = SettingGroup(
         //     ),
         //   ],
         // ),
+      ],
+    ),
+    SettingGroup(
+      "Timer",
+      (context) => AppLocalizations.of(context)!.timerSettingGroup,
+      [
+        SettingGroup(
+          "Display",
+          (context) => AppLocalizations.of(context)!.displaySettingGroup,
+          [
+            SwitchSetting(
+              "Show Label",
+              (context) => AppLocalizations.of(context)!.showLabelSetting,
+              true,
+              onChange: (context, value) async {
+                await HomeWidget.saveWidgetData<bool>('showLabel', value);
+                updateTimerWidget();
+              },
+            ),
+            SwitchSetting(
+              "Show State",
+              (context) => AppLocalizations.of(context)!.showStateSetting,
+              true,
+              onChange: (context, value) async {
+                await HomeWidget.saveWidgetData<bool>('showState', value);
+                updateTimerWidget();
+              },
+            ),
+            ColorSetting(
+              "Timer Color",
+              (context) => AppLocalizations.of(context)!.timerColorSetting,
+              Colors.white,
+              onChange: (context, value) async {
+                await HomeWidget.saveWidgetData<String>(
+                    'timerColor', '#${value.value.toRadixString(16)}');
+                updateTimerWidget();
+              },
+            ),
+            ColorSetting(
+              "Label Color",
+              (context) => AppLocalizations.of(context)!.labelColorSetting,
+              Colors.white,
+              onChange: (context, value) async {
+                await HomeWidget.saveWidgetData<String>(
+                    'labelColor', '#${value.value.toRadixString(16)}');
+                updateTimerWidget();
+              },
+            ),
+          ],
+        ),
       ],
     ),
   ],

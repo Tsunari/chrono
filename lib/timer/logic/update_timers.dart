@@ -6,7 +6,10 @@ import 'package:clock_app/alarm/logic/schedule_alarm.dart';
 import 'package:clock_app/common/types/notification_type.dart';
 import 'package:clock_app/common/types/schedule_id.dart';
 import 'package:clock_app/timer/types/timer.dart';
+import 'package:clock_app/timer/types/time_duration.dart';
 import 'package:clock_app/common/utils/list_storage.dart';
+import 'package:clock_app/widgets/logic/update_widgets.dart';
+import 'package:clock_app/common/types/timer_state.dart';
 
 Future<void> cancelAllTimers() async {
   List<ScheduleId> scheduleIds =
@@ -29,6 +32,7 @@ Future<void> resetAllTimers() async {
   await saveList("timers", timers);
   SendPort? sendPort = IsolateNameServer.lookupPortByName(updatePortName);
   sendPort?.send("updateTimers");
+  await updateTimerWidget();
 }
 
 Future<void> updateTimer(int scheduleId, String description) async {
@@ -40,6 +44,7 @@ Future<void> updateTimer(int scheduleId, String description) async {
 
   timers[timerIndex] = timer;
   await saveList("timers", timers);
+  await updateTimerWidget();
 }
 
 Future<void> updateTimers(String description) async {
@@ -54,6 +59,7 @@ Future<void> updateTimers(String description) async {
 
   SendPort? sendPort = IsolateNameServer.lookupPortByName(updatePortName);
   sendPort?.send("updateTimers");
+  await updateTimerWidget();
 }
 
 Future<void> updateTimerById(
@@ -68,4 +74,54 @@ Future<void> updateTimerById(
 
   SendPort? sendPort = IsolateNameServer.lookupPortByName(updatePortName);
   sendPort?.send("updateTimers");
+  await updateTimerWidget();
+}
+
+String _formatTimerDuration(int totalSeconds) {
+  final duration = TimeDuration.fromSeconds(totalSeconds);
+  return '${duration.hours.toString().padLeft(2, '0')}:${duration.minutes.toString().padLeft(2, '0')}:${duration.seconds.toString().padLeft(2, '0')}';
+}
+
+String _getTimerStateString(TimerState state) {
+  switch (state) {
+    case TimerState.running:
+      return 'Running';
+    case TimerState.paused:
+      return 'Paused';
+    case TimerState.stopped:
+      return 'Stopped';
+  }
+}
+
+Future<void> updateTimerWidget() async {
+  List<ClockTimer> timers = await loadList("timers");
+  
+  // Find the first running or paused timer, or the first timer if none are active
+  ClockTimer? activeTimer;
+  for (var timer in timers) {
+    if (timer.isRunning || timer.isPaused) {
+      activeTimer = timer;
+      break;
+    }
+  }
+  
+  // If no active timer, use the first timer or show default
+  if (activeTimer == null && timers.isNotEmpty) {
+    activeTimer = timers.first;
+  }
+  
+  if (activeTimer != null) {
+    setTimerWidgetData(
+      label: activeTimer.label,
+      time: _formatTimerDuration(activeTimer.remainingSeconds),
+      state: _getTimerStateString(activeTimer.state),
+    );
+  } else {
+    // Show default when no timers exist
+    setTimerWidgetData(
+      label: 'Timer',
+      time: '00:00:00',
+      state: 'Stopped',
+    );
+  }
 }

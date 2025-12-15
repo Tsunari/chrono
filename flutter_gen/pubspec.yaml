@@ -1,0 +1,10 @@
+name: flutter_gen
+description: Shim package re-exporting generated localization from clock_app
+version: 0.0.0
+publish_to: "none"
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  clock_app:
+    path: ../
